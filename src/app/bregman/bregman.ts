@@ -12,7 +12,7 @@ export class Bregman implements AfterViewInit, OnChanges {
   @Input() f: (x: number) => number = x => 0.5 * x * x;
   @Input() fPrime: (x: number) => number = x => x;
   @Input() id: string = 'jxgbox';
-  @Input() showTangent: boolean = false;
+  @Input() showTangent: boolean = true;
   @Input() showDivergence: boolean = true;
   @Input() showConvexity: boolean = false;
 
@@ -35,11 +35,10 @@ export class Bregman implements AfterViewInit, OnChanges {
     const projectionCoords = () => [x.X(), tangentY()];
     const tangentProjection = board.create('point', [projectionCoords], { name: "", face: '[]', size: 2 });
 
-    this.tangent = board.create('line', [x0, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'blue', strokeOpacity: 0.4, dash: 2 });
-    this.divergence = board.create('line', [x, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'red', strokeOpacity: 0.8, dash: 2 });
-    this.convexity = board.create('line', [x0, x], { straightFirst: false, straightLast: false, strokeColor: 'green', strokeOpacity: 0.8, dash: 2 });
+    this.tangent = board.create('line', [x0, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'blue', strokeOpacity: this.showTangent ? 0.8 : 0, dash: 2 });
+    this.divergence = board.create('line', [x, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'red', strokeOpacity: this.showDivergence ? 0.8 : 0, dash: 2 });
+    this.convexity = board.create('line', [x0, x], { straightFirst: false, straightLast: false, strokeColor: 'green', strokeOpacity: this.showConvexity ? 0.8 : 0, dash: 2 });
 
-    this.updateVisibility();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -54,9 +53,30 @@ export class Bregman implements AfterViewInit, OnChanges {
   }
 
   updateVisibility() {
-    this.tangent.setAttribute({ visible: this.showTangent });
-    this.divergence.setAttribute({ visible: this.showDivergence });
-    this.convexity.setAttribute({ visible: this.showConvexity });
+    if (this.tangent) {
+      this.animateLine(this.tangent, this.showTangent);
+    }
+    if (this.divergence) {
+      this.animateLine(this.divergence, this.showDivergence);
+    }
+    if (this.convexity) {
+      this.animateLine(this.convexity, this.showConvexity);
+    }
+  }
+
+  animateLine(line: JXG.Line, show: boolean) {
+    const targetOpacity = show ? 0.8 : 0;
+    const step = 0.05 * (show ? 1 : -1);
+    let currentOpacity = parseFloat(line.getAttribute('strokeOpacity') || '0');
+
+    const interval = setInterval(() => {
+      currentOpacity += step;
+      if ((show && currentOpacity >= targetOpacity) || (!show && currentOpacity <= targetOpacity)) {
+        currentOpacity = targetOpacity;
+        clearInterval(interval);
+      }
+      line.setAttribute({ strokeOpacity: currentOpacity });
+    }, 25);
   }
 
 

@@ -15,7 +15,7 @@ export class EuclideanComponent {
   f = (x: number) => 0.5 * x * x;
   fPrime = (x: number) => x;
   id = 'euclidean'
-  showTangent: boolean = false;
+  showTangent: boolean = true;
   showDivergence: boolean = true;
   showConvexity: boolean = false;
 }
