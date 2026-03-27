@@ -1,18 +1,21 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import * as JXG from 'jsxgraph';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Bregman } from '../bregman/bregman';
+import { FormsModule } from '@angular/forms';
 
-// declare const JXG: any;
 
 @Component({
   selector: 'app-euclidean',
-  imports: [MatCardModule, Bregman],
+  imports: [MatCardModule, MatSlideToggleModule, Bregman, FormsModule],
   templateUrl: './euclidean.html',
   styleUrl: './euclidean.css',
 })
 export class EuclideanComponent {
-    f = (x: number) => 0.5 * x * x;
-    fPrime = (x: number) => x;
-    id = 'euclidean'
+  f = (x: number) => 0.5 * x * x;
+  fPrime = (x: number) => x;
+  id = 'euclidean'
+  showTangent: boolean = false;
+  showDivergence: boolean = true;
+  showConvexity: boolean = false;
 }
