@@ -28,16 +28,16 @@ export class Bregman implements AfterViewInit, OnChanges {
 
     const curve = board.create('functiongraph', [this.f]);
 
-    const x = board.create('glider', [0, this.f(0), curve], { name: 'x', size: 4 });
-    const x0 = board.create('glider', [1, this.f(1), curve], { name: 'x₀', size: 4 });
+    const p = board.create('glider', [0, this.f(0), curve], { name: 'P', size: 4 });
+    const q = board.create('glider', [1, this.f(1), curve], { name: 'Q', size: 4 });
 
-    const tangentY = () => this.f(x0.X()) + this.fPrime(x0.X()) * (x.X() - x0.X());
-    const projectionCoords = () => [x.X(), tangentY()];
+    const tangentY = () => this.f(q.X()) + this.fPrime(q.X()) * (p.X() - q.X());
+    const projectionCoords = () => [p.X(), tangentY()];
     const tangentProjection = board.create('point', [projectionCoords], { name: "", face: '[]', size: 2 });
 
-    this.tangent = board.create('line', [x0, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'blue', strokeOpacity: this.showTangent ? 0.8 : 0, dash: 2 });
-    this.divergence = board.create('line', [x, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'red', strokeOpacity: this.showDivergence ? 0.8 : 0, dash: 2 });
-    this.convexity = board.create('line', [x0, x], { straightFirst: false, straightLast: false, strokeColor: 'green', strokeOpacity: this.showConvexity ? 0.8 : 0, dash: 2 });
+    this.tangent = board.create('line', [q, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'blue', strokeOpacity: this.showTangent ? 0.8 : 0, dash: 2 });
+    this.divergence = board.create('line', [p, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'red', strokeOpacity: this.showDivergence ? 0.8 : 0, dash: 2 });
+    this.convexity = board.create('line', [q, p], { straightFirst: false, straightLast: false, strokeColor: 'green', strokeOpacity: this.showConvexity ? 0.8 : 0, dash: 2 });
 
   }
 
