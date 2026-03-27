@@ -29,6 +29,8 @@ export class Bregman implements AfterViewInit {
 
     const tangent = board.create('line', [x0, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'blue', strokeOpacity: 0.4, dash: 2 });
     const divergence = board.create('line', [x, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'red', strokeOpacity: 0.8, dash: 2 });
+    const convexity = board.create('line', [x0, x], { straightFirst: false, straightLast: false, strokeColor: 'green', strokeOpacity: 0.8, dash: 2 });
+    convexity.hide();
   }
 
 }
