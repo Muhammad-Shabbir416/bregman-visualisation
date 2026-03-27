@@ -35,16 +35,41 @@ export class Bregman implements AfterViewInit, OnChanges {
 
     const tangentY = () => this.f(q.X()) + this.fPrime(q.X()) * (p.X() - q.X());
     const projectionCoords = () => [p.X(), tangentY()];
-    const reverseProjectionCoords = () => [
-      q.X(),
-      this.f(p.X()) + this.fPrime(p.X()) * (q.X() - p.X())
-    ];
-    const tangentProjection = board.create('point', [projectionCoords], { name: "", face: '[]', size: 2 });
-    const reverseProjection = board.create('point', [reverseProjectionCoords], { name: "", face: '[]', size: 2 });
+    const reverseProjectionCoords = () => [q.X(), this.f(p.X()) + this.fPrime(p.X()) * (q.X() - p.X())];
 
-    this.tangent = board.create('line', [q, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'blue', strokeOpacity: this.showTangent ? 0.8 : 0, dash: 2 });
-    this.divergence = board.create('line', [p, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'red', strokeOpacity: this.showDivergence ? 0.8 : 0, dash: 2 });
-    this.convexity = board.create('line', [q, p], { straightFirst: false, straightLast: false, strokeColor: 'green', strokeOpacity: this.showConvexity ? 0.8 : 0, dash: 2 });
+    const tangentProjection = board.create('point', [projectionCoords], {
+      name: "",
+      face: '[]',
+      size: 2
+    });
+    const reverseProjection = board.create('point', [reverseProjectionCoords], {
+      name: "",
+      face: '[]',
+      size: 2
+    });
+
+    this.tangent = board.create('line', [q, tangentProjection], {
+      straightFirst: false,
+      straightLast: false,
+      strokeColor: 'blue',
+      strokeOpacity: this.showTangent ? 0.8 : 0,
+      dash: 2
+    });
+    this.divergence = board.create('line', [p, tangentProjection], {
+      straightFirst: false,
+      straightLast: false,
+      strokeColor: 'red',
+      strokeOpacity: this.showDivergence ? 0.8 : 0,
+      dash: 2
+    });
+    this.convexity = board.create('line', [q, p], {
+      straightFirst: false,
+      straightLast: false,
+      strokeColor: 'green',
+      strokeOpacity: this.showConvexity ? 0.8 : 0,
+      dash: 2
+    });
+
     this.reverse = board.create('line', [q, reverseProjection], {
       straightFirst: false,
       straightLast: false,
@@ -96,6 +121,4 @@ export class Bregman implements AfterViewInit, OnChanges {
       line.setAttribute({ strokeOpacity: currentOpacity });
     }, 25);
   }
-
-
 }
