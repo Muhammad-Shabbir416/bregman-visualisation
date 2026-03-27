@@ -16,6 +16,9 @@ export class Bregman implements AfterViewInit, OnChanges {
   @Input() showDivergence: boolean = true;
   @Input() showConvexity: boolean = false;
   @Input() showReverse: boolean = false;
+  @Input() x: number = 0;
+  @Input() x0: number = 1;
+  @Input() boundingBox: [number, number, number, number] = [-5, 5, 5, -1];
 
   tangent!: JXG.Line;
   divergence!: JXG.Line;
@@ -24,14 +27,14 @@ export class Bregman implements AfterViewInit, OnChanges {
 
   ngAfterViewInit(): void {
     const board = JXG.JSXGraph.initBoard(this.id, {
-      boundingbox: [-5, 5, 5, -1],
+      boundingbox: this.boundingBox,
       axis: true
     });
 
     const curve = board.create('functiongraph', [this.f]);
 
-    const p = board.create('glider', [0, this.f(0), curve], { name: 'P', size: 4 });
-    const q = board.create('glider', [1, this.f(1), curve], { name: 'Q', size: 4 });
+    const p = board.create('glider', [this.x, this.f(this.x), curve], { name: 'P', size: 4 });
+    const q = board.create('glider', [this.x0, this.f(this.x0), curve], { name: 'Q', size: 4 });
 
     const tangentY = () => this.f(q.X()) + this.fPrime(q.X()) * (p.X() - q.X());
     const projectionCoords = () => [p.X(), tangentY()];

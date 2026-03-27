@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EuclideanComponent } from './euclidean';
+import { KlComponent } from './kl';
 
-describe('EuclideanComponent', () => {
-  let component: EuclideanComponent;
-  let fixture: ComponentFixture<EuclideanComponent>;
+describe('KlComponent', () => {
+  let component: KlComponent;
+  let fixture: ComponentFixture<KlComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EuclideanComponent]
+      imports: [KlComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EuclideanComponent);
+    fixture = TestBed.createComponent(KlComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
