@@ -18,4 +18,5 @@ export class EuclideanComponent {
   showTangent: boolean = true;
   showDivergence: boolean = true;
   showConvexity: boolean = false;
+  showReverse: boolean = false;
 }

@@ -5,11 +5,12 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <app-bregman [f]="f" [fPrime]="fPrime" [id]="id" [showTangent]="showTangent" [showDivergence]="showDivergence" [showConvexity]="showConvexity"></app-bregman>
+    <app-bregman [f]="f" [fPrime]="fPrime" [id]="id" [showTangent]="showTangent" [showDivergence]="showDivergence" [showConvexity]="showConvexity" [showReverse]="showReverse"></app-bregman>
   </mat-card-content>
   <mat-card-actions>
     <mat-slide-toggle [(ngModel)]="showTangent">Tangent</mat-slide-toggle>
     <mat-slide-toggle [(ngModel)]="showDivergence">Divergence</mat-slide-toggle>
     <mat-slide-toggle [(ngModel)]="showConvexity">Convexity</mat-slide-toggle>
+    <mat-slide-toggle [(ngModel)]="showReverse">Reverse Divergence</mat-slide-toggle>
   </mat-card-actions>
 </mat-card>

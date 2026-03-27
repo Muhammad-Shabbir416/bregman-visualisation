@@ -15,10 +15,12 @@ export class Bregman implements AfterViewInit, OnChanges {
   @Input() showTangent: boolean = true;
   @Input() showDivergence: boolean = true;
   @Input() showConvexity: boolean = false;
+  @Input() showReverse: boolean = false;
 
   tangent!: JXG.Line;
   divergence!: JXG.Line;
   convexity!: JXG.Line;
+  reverse!: JXG.Line;
 
   ngAfterViewInit(): void {
     const board = JXG.JSXGraph.initBoard(this.id, {
@@ -33,21 +35,34 @@ export class Bregman implements AfterViewInit, OnChanges {
 
     const tangentY = () => this.f(q.X()) + this.fPrime(q.X()) * (p.X() - q.X());
     const projectionCoords = () => [p.X(), tangentY()];
+    const reverseProjectionCoords = () => [
+      q.X(),
+      this.f(p.X()) + this.fPrime(p.X()) * (q.X() - p.X())
+    ];
     const tangentProjection = board.create('point', [projectionCoords], { name: "", face: '[]', size: 2 });
+    const reverseProjection = board.create('point', [reverseProjectionCoords], { name: "", face: '[]', size: 2 });
 
     this.tangent = board.create('line', [q, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'blue', strokeOpacity: this.showTangent ? 0.8 : 0, dash: 2 });
     this.divergence = board.create('line', [p, tangentProjection], { straightFirst: false, straightLast: false, strokeColor: 'red', strokeOpacity: this.showDivergence ? 0.8 : 0, dash: 2 });
     this.convexity = board.create('line', [q, p], { straightFirst: false, straightLast: false, strokeColor: 'green', strokeOpacity: this.showConvexity ? 0.8 : 0, dash: 2 });
-
+    this.reverse = board.create('line', [q, reverseProjection], {
+      straightFirst: false,
+      straightLast: false,
+      strokeColor: 'orange',
+      strokeOpacity: this.showReverse ? 0.8 : 0,
+      dash: 2
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const tangentChange = changes['showTangent'];
     const divergenceChange = changes['showDivergence'];
     const convexityChange = changes['showConvexity'];
+    const reverseChange = changes['showReverse'];
     if ((tangentChange && !tangentChange.isFirstChange()) ||
       (divergenceChange && !divergenceChange.isFirstChange()) ||
-      (convexityChange && !convexityChange.isFirstChange())) {
+      (convexityChange && !convexityChange.isFirstChange()) ||
+      (reverseChange && !reverseChange.isFirstChange())) {
       this.updateVisibility();
     }
   }
@@ -61,6 +76,9 @@ export class Bregman implements AfterViewInit, OnChanges {
     }
     if (this.convexity) {
       this.animateLine(this.convexity, this.showConvexity);
+    }
+    if (this.reverse) {
+      this.animateLine(this.reverse, this.showReverse);
     }
   }
 
